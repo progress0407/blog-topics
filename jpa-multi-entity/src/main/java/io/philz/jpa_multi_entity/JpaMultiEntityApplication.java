@@ -9,5 +9,4 @@ public class JpaMultiEntityApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JpaMultiEntityApplication.class, args);
 	}
-
 }
