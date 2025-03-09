@@ -45,4 +45,16 @@ public class Soldier extends BaseEntity {
             manager.decrementMemberCount();
         }
     }
+
+    public void bindManger(Manager manager) {
+        this.manager = manager;
+    }
+
+    public void bring(Worker... workers) {
+
+        this.workers.addAll(List.of(workers));
+        for (Worker worker : workers) {
+            worker.bindSoldier(this);
+        }
+    }
 }

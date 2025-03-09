@@ -28,4 +28,8 @@ public class Worker extends BaseEntity {
 	public void markEliminated() {
 		this.state = WorkerState.ELIMINATED;
 	}
+
+	public void bindSoldier(Soldier soldier) {
+		this.soldier = soldier;
+	}
 }

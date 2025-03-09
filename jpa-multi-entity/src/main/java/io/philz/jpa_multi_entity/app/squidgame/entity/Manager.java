@@ -28,4 +28,12 @@ public class Manager extends BaseEntity {
 	public void decrementMemberCount() {
 		this.totalMemberCount--;
 	}
+
+	public void bring(Soldier... soldiers) {
+
+		this.soldiers.addAll(List.of(soldiers));
+		for (Soldier soldier : soldiers) {
+			soldier.bindManger(this);
+		}
+	}
 }
