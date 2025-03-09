@@ -1,4 +1,4 @@
-package io.philz.jpa_multi_entity.app.squidgame.infrastrucure;
+package io.philz.jpa_multi_entity.app.squidgame.infrastrucure.manager;
 
 import static io.philz.jpa_multi_entity.app.squidgame.entity.QManager.*;
 import static io.philz.jpa_multi_entity.app.squidgame.entity.QSoldier.*;
@@ -13,8 +13,8 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import io.philz.jpa_multi_entity.app.global.PageResponse;
-import io.philz.jpa_multi_entity.app.squidgame.dto.MemberResponseDto;
-import io.philz.jpa_multi_entity.app.squidgame.dto.QMemberResponseDto;
+import io.philz.jpa_multi_entity.app.squidgame.dto.QWorkerResponseDto;
+import io.philz.jpa_multi_entity.app.squidgame.dto.WorkerResponseDto;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -23,10 +23,10 @@ public class ManagerQuery {
 
 	private final JPAQueryFactory queryFactory;
 
-	private PageResponse<?> queryMembers(Pageable paging) {
+	public PageResponse<WorkerResponseDto> listWorkers(Pageable paging) {
 
-		List<MemberResponseDto> content = queryFactory.select(
-				new QMemberResponseDto(worker.id, worker.state, manager.id, manager.id))
+		List<WorkerResponseDto> content = queryFactory.select(
+				new QWorkerResponseDto(worker.id, worker.state, manager.id, manager.id))
 			.from(worker)
 			.innerJoin(worker.soldier, soldier)
 			.innerJoin(soldier.manager, manager)

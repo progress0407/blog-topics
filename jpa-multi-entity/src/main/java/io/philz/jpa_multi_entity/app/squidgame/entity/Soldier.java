@@ -1,9 +1,16 @@
 package io.philz.jpa_multi_entity.app.squidgame.entity;
 
+import static jakarta.persistence.CascadeType.*;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import io.philz.jpa_multi_entity.app.global.BaseEntity;
+import io.philz.jpa_multi_entity.app.global.DomainNotFoundException;
 import io.philz.jpa_multi_entity.app.squidgame.constant.WorkerState;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,37 +21,28 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * 세모
+ */
 @Entity
+@DynamicUpdate
 @Getter
 @ToString
 public class Soldier extends BaseEntity {
 
-    // 세모는 반드시 네모에 속함.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     @ToString.Exclude
     private Manager manager;
 
-    @OneToMany(mappedBy = "soldier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "soldier", cascade = ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<Worker> workers = new ArrayList<>();
+    private Set<Worker> workers = new HashSet<>();
 
     /**
      * 세모가 척살한 동그라미 수
      */
     private int executionCount = 0;
-
-    /**
-     * 동그라미 실행 로직: 상태 변경, 척살 카운트 증가, 상위 네모의 조직원수 감소
-     */
-    public void executeWorker(Worker worker) {
-        if(worker.getState() != WorkerState.ELIMINATED) {
-            worker.markEliminated();
-            this.executionCount++;
-            // 네모의 조직원수 업데이트 (예: 동그라미 한 명이 제거되었으므로 -1)
-            manager.decrementMemberCount();
-        }
-    }
 
     public void bindManger(Manager manager) {
         this.manager = manager;
@@ -56,5 +54,24 @@ public class Soldier extends BaseEntity {
         for (Worker worker : workers) {
             worker.bindSoldier(this);
         }
+    }
+
+    public void eliminateWorker(long workerId) {
+
+        Worker workerToKill = workers.stream().filter(worker -> worker.getId().equals(workerId))
+            .findAny()
+            .orElseThrow(DomainNotFoundException::new);
+
+        workerToKill.beEliminated();
+        executionCount++;
+    }
+
+    public void eliminateWorker() {
+        executionCount++;
+        getManager().decrementMemberCount();
+    }
+
+    public int totalMemberCount() {
+        return workers.size();
     }
 }

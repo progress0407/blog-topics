@@ -1,4 +1,4 @@
-package io.philz.jpa_multi_entity.app.squidgame.infrastrucure;
+package io.philz.jpa_multi_entity.app.squidgame.infrastrucure.manager;
 
 import static io.philz.jpa_multi_entity.app.squidgame.constant.WorkerState.*;
 import static io.philz.jpa_multi_entity.app.squidgame.entity.QManager.*;
@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import io.philz.jpa_multi_entity.app.global.DomainNotFoundException;
 import io.philz.jpa_multi_entity.app.squidgame.entity.Manager;
+import io.philz.jpa_multi_entity.app.squidgame.entity.QManager;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,20 +18,20 @@ public class ManagerRepositoryCustomImpl implements ManagerRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Manager findAggregateByIdOrThrowOrThrow(long id) {
+	public Manager findAggregateByIdOrThrowOrThrow(long workerId) {
 
-		var fetched = queryFactory.selectFrom(manager)
+		var manager = queryFactory
+			.selectFrom(QManager.manager)
 			.distinct()
-			.leftJoin(manager.soldiers, soldier).fetchJoin()
-			.leftJoin(soldier.workers, worker).fetchJoin()
-			.where(manager.id.eq(id),
-				worker.state.ne(ELIMINATED))
+				.leftJoin(QManager.manager.soldiers, soldier).fetchJoin()
+				.leftJoin(soldier.workers, worker).fetchJoin()
+			.where(worker.id.eq(workerId), worker.state.ne(ELIMINATED))
 			.fetchOne();
 
-		if (fetched == null) {
+		if (manager == null) {
 			throw new DomainNotFoundException();
 		}
 
-		return fetched;
+		return manager;
 	}
 }

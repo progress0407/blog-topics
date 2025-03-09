@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.philz.jpa_multi_entity.app.squidgame.entity.Manager;
 import io.philz.jpa_multi_entity.app.squidgame.entity.Soldier;
 import io.philz.jpa_multi_entity.app.squidgame.entity.Worker;
-import io.philz.jpa_multi_entity.app.squidgame.infrastrucure.ManagerRepository;
+import io.philz.jpa_multi_entity.app.squidgame.infrastrucure.manager.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,12 +44,12 @@ public class DataSampleInit implements ApplicationRunner {
 		Manager manager1 = new Manager();
 		Manager manager2 = new Manager();
 
-		manager1.bring(soldier1);
-		manager2.bring(soldier2, soldier3);
-
 		soldier1.bring(worker1, worker2);
 		soldier2.bring(worker3, worker4, worker5);
 		soldier2.bring(worker6, worker7, worker8, worker9);
+
+		manager1.bring(soldier1);
+		manager2.bring(soldier2, soldier3);
 
 		managerRepository.saveAll(List.of(manager1, manager2));
 

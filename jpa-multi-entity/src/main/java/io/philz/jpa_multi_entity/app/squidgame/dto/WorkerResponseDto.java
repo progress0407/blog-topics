@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-public class MemberResponseDto {
+public class WorkerResponseDto {
 
 	private long workerId;
 	private String workerState;
@@ -18,7 +18,7 @@ public class MemberResponseDto {
 	private long managerId;
 
 	@QueryProjection
-	public MemberResponseDto(long workerId, WorkerState workerState, long soldierId, long managerId) {
+	public WorkerResponseDto(long workerId, WorkerState workerState, long soldierId, long managerId) {
 		this.workerId = workerId;
 		this.workerState = workerState.name();
 		this.soldierId = soldierId;
