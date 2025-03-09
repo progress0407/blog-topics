@@ -41,6 +41,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 
+	// ===========    LOG    ===========
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.10.0'
+
+
 	// ===========    DevTools    ===========
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
