@@ -1,1 +1,3 @@
-spring.application.name: jpa-multi-entity
+spring:
+  application.name: jpa-multi-entity
+  profiles.active: local

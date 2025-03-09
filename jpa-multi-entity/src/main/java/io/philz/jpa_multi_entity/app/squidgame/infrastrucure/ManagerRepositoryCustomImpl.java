@@ -8,11 +8,7 @@ import static io.philz.jpa_multi_entity.app.squidgame.entity.QWorker.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import io.philz.jpa_multi_entity.app.global.DomainNotFoundException;
-import io.philz.jpa_multi_entity.app.squidgame.constant.WorkerState;
 import io.philz.jpa_multi_entity.app.squidgame.entity.Manager;
-import io.philz.jpa_multi_entity.app.squidgame.entity.QManager;
-import io.philz.jpa_multi_entity.app.squidgame.entity.QSoldier;
-import io.philz.jpa_multi_entity.app.squidgame.entity.QWorker;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
